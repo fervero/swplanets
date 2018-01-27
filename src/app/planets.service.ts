@@ -3,15 +3,23 @@ import { HttpClient } from '@angular/common/http';
 import { StarWarsJSON } from './starwarsjson';
 import { Planet } from './planet';
 import { Observable } from 'rxjs/Observable';
+import {CacheService} from './cache.service';
+
+const apiURL = "https://swapi.co/api";;
 
 @Injectable()
 export class PlanetsService {
-  readonly apiURL = "https://swapi.co/api/";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cache: CacheService) { }
 
-  getPlanets(path = this.apiURL + "planets"): Observable<StarWarsJSON> {
-    return this.http.get<StarWarsJSON>(path);
+  getPlanets(path = `${apiURL}/planets/?page=1&format=json`): Observable<StarWarsJSON> {
+    const request = this.http.get<StarWarsJSON>(path);
+    return this.cache.get(path, request);
+  }
+
+  getNthPage(n: number): Observable<StarWarsJSON> {
+    const path = `${apiURL}/planets/?page=${n}&format=json`;
+    return this.getPlanets(path);
   }
 
 }

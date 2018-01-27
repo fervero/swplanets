@@ -1,0 +1,14 @@
+li {
+	font-size: 1.25rem;
+	display: inline-block;
+	padding: 1em;
+	text-decoration: underline;
+	color: blue;
+	cursor: pointer;
+}
+
+li.current {
+	text-decoration: none;
+	color: black;
+	cursor: default;
+}

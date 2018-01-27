@@ -2,9 +2,5 @@
 <h1>
   {{ title }}
 </h1>
-<ul>
-  <li *ngFor="let planet of results">{{planet.name}} </li>
-</ul>
-<button *ngIf="previous" (click)="getPrevious()">PREVIOUS</button>
-<button *ngIf="next" (click)="getNext()">NEXT</button>
-
+<router-outlet></router-outlet>
+<!-- <app-pager></app-pager> -->

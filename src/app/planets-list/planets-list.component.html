@@ -1,0 +1,6 @@
+<ul class="planet_list">
+  <li *ngFor="let planet of results">{{planet.name}} </li>
+</ul>
+
+<a *ngIf="page>1" [routerLink]="'/planets'" [queryParams]="{start: page-1}">Previous</a>
+<a *ngIf="page*10<totalCount" [routerLink]="'/planets'" [queryParams]="{start: page+1}">Next</a>

@@ -1,0 +1,17 @@
+<button (click)="changePagination(5)">5</button>
+<button (click)="changePagination(10)">10</button>
+<button (click)="changePagination(25)">25</button>
+<button (click)="changePagination(100)">100</button>
+<p>
+  <b>Pagination: </b>{{pagination$ | async}}
+</p>
+<h2>pager</h2>
+<ul>
+  <li *ngIf="(page$ | async) > 1" (click)="changePage(-1)">...prev</li>
+  <li *ngFor="let link of (links | async)" 
+    (click)="changePosition(link)" 
+    [class.current]="link===(position|async)">
+    {{link}}
+  </li>
+  <li *ngIf="((page$|async)) * (pagination$|async) < count" (click)="changePage(1)">next...</li>
+</ul>
