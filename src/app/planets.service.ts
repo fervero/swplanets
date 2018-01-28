@@ -5,7 +5,7 @@ import { Planet } from './planet';
 import { Observable } from 'rxjs/Observable';
 import {CacheService} from './cache.service';
 
-const apiURL = "https://swapi.co/api";;
+const apiURL = "https://swapi.co/api";
 
 @Injectable()
 export class PlanetsService {

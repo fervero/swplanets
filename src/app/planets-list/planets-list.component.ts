@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlanetsService } from '../planets.service';
+import { SinglePlanetService } from '../single-planet.service';
 import { StarWarsJSON } from '../starwarsjson';
 import { Planet } from '../planet';
 import { Observable } from 'rxjs/Observable';
@@ -14,8 +15,7 @@ const DEFAULT_PAGE = 1;
 @Component({
   selector: 'app-planets-list',
   templateUrl: './planets-list.component.html',
-  styleUrls: ['./planets-list.component.scss'],
-  providers: [CacheService]
+  styleUrls: ['./planets-list.component.scss']
 })
 export class PlanetsListComponent implements OnInit {
 
@@ -28,11 +28,12 @@ export class PlanetsListComponent implements OnInit {
 
   constructor(
     private planets: PlanetsService,
+    private singlePlanet: SinglePlanetService,
     private cache: CacheService,
     private route: ActivatedRoute
   ) {
     this.page = DEFAULT_PAGE;
-   }
+  }
 
   getNthPage(n: number): void {
     if (this.subscription) {
@@ -44,16 +45,24 @@ export class PlanetsListComponent implements OnInit {
         this.next = response.next;
         this.previous = response.previous;
         this.totalCount = response.count;
-      });    
+      });
   }
+
+  retrievePlanet(name: string): void {
+    const planet: Planet = this.singlePlanet.getSinglePlanet(name);
+    console.log(planet);
+  }
+
+  extractPlanetId = this.singlePlanet.extractPlanetID;
 
   ngOnInit() {
     this.getNthPage(1);
-    this.route.queryParams.subscribe((params) =>{
-      if(params.start) { 
+    this.route.queryParams.subscribe((params) => {
+      if (params.start) {
         this.page = parseInt(params.start);
         this.getNthPage(this.page);
       }
     });
   }
+
 }

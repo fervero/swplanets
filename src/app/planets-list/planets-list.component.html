@@ -1,5 +1,5 @@
 <ul class="planet_list">
-  <li *ngFor="let planet of results">{{planet.name}} </li>
+  <li *ngFor="let planet of results"><a [routerLink]="'/planet/'+extractPlanetId(planet.url)">{{planet.name}}</a></li>
 </ul>
 
 <a *ngIf="page>1" [routerLink]="'/planets'" [queryParams]="{start: page-1}">Previous</a>
