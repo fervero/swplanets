@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { PlanetsService } from '../planets.service';
-import { SinglePlanetService } from '../single-planet.service';
+import { SearchService } from '../search.service';
 import { StarWarsJSON } from '../starwarsjson';
 import { Planet } from '../planet';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { CacheService } from '../cache.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
-const DEFAULT_PAGINATION = 10;
-const DEFAULT_PAGE = 1;
+import { filter, tap, withLatestFrom, map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators/switchMap';
 
 @Component({
   selector: 'app-planets-list',
@@ -22,47 +20,43 @@ export class PlanetsListComponent implements OnInit {
   results: Array<Planet>;
   next: string = "";
   previous: string = "";
-  subscription: Subscription;
-  public page: number;
-  public totalCount: number;
+  public searchBoxTerm: string = "";
+  public searchTerm: string = "";
 
   constructor(
-    private planets: PlanetsService,
-    private singlePlanet: SinglePlanetService,
-    private cache: CacheService,
-    private route: ActivatedRoute
-  ) {
-    this.page = DEFAULT_PAGE;
+    public planets: PlanetsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private searchService: SearchService
+  ) { }
+
+  updateSearch(term: string): void {
+    this.searchService.search(term);
   }
 
-  getNthPage(n: number): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-    this.subscription = this.planets.getNthPage(n)
-      .subscribe(response => {
-        this.results = response.results;
-        this.next = response.next;
-        this.previous = response.previous;
-        this.totalCount = response.count;
-      });
-  }
+  extractPlanetId = this.planets.extractPlanetID;
 
-  retrievePlanet(name: string): void {
-    const planet: Planet = this.singlePlanet.getSinglePlanet(name);
-    console.log(planet);
+  isNumber(x: string): boolean {
+    return !!parseFloat(x);
   }
-
-  extractPlanetId = this.singlePlanet.extractPlanetID;
 
   ngOnInit() {
-    this.getNthPage(1);
+    this.planets.init();
     this.route.queryParams.subscribe((params) => {
-      if (params.start) {
-        this.page = parseInt(params.start);
-        this.getNthPage(this.page);
+      if (params.search) {
+        this.searchBoxTerm = params.search;
+      } else {
+        this.searchBoxTerm = "";
       }
+      this.searchTerm = this.searchBoxTerm;
     });
+    this.searchService.search$
+      .subscribe((term) => {
+        if (term.length > 0) {
+          this.router.navigate(['/planets'], { queryParams: { search: term } })
+        } else {
+          this.router.navigate(['/planets'])
+        }
+      })
   }
-
-}
+};

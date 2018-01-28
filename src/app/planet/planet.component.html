@@ -1,30 +1,14 @@
 <div *ngIf="planet && planet.name">
     <h2>{{planet.name}}</h2>
-    <p><b>Rotation period: </b>{{planet.rotation_period | number}}</p>
-    <p><b>Orbital period: </b>{{planet.orbital_period | number}}</p>
-    <p><b>Diameter: </b>{{planet.diameter | number}}</p>
+    <p><b>Rotation period: </b>{{planet.rotation_period | toNumber}}</p>
+    <p><b>Orbital period: </b>{{planet.orbital_period | toNumber}}</p>
+    <p><b>Diameter: </b>{{planet.diameter | toNumber}}</p>
     <p><b>Climate: </b>{{planet.climate}}</p>
     <p><b>Terrain: </b>{{planet.terrain}}</p>
-    <p><b>Surface water: </b>{{planet.surface_water}}</p>
-    <p><b>Population: </b>{{planet.population | number}}</p>
+    <p><b>Surface water: </b>{{planet.surface_water}}{{(isNumber(planet.surface_water)) ? '%' : ''}}</p>
+    <p><b>Population: </b>{{planet.population | toNumber}}</p>
 </div>
+<button (click)="back()">BACK</button>
 <div *ngIf="error">
   <span class="error">Sorry, planet not found.</span>
 </div>
-
-<!-- export interface Planet {
-	"name": string,
-	"rotation_period": string,
-	"orbital_period": string,
-	"diameter": string,
-	"climate": string,
-	"gravity": string,
-	"terrain": string,
-	"surface_water": string,
-	"population": string,
-	"residents": Array<string>,
-	"films": Array<string>,
-	"created": string,
-	"edited": string,
-	"url": string
-} -->

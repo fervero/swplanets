@@ -4,3 +4,20 @@
 		margin-bottom: 0.3em;
 	}
 }
+
+input {
+	font-size: 1.25rem;
+	margin-left: 1em;
+	padding-left: 0.75em;
+	
+}
+input, label {
+	vertical-align: middle;
+}
+
+.disabled {
+	pointer-events: none;
+	cursor: default;
+	font-style: italic;
+	color: gray;
+}

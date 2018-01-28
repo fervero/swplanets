@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SinglePlanetService } from '../single-planet.service';
+import { PlanetsService } from '../planets.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Planet } from '../planet';
@@ -17,22 +17,22 @@ export class PlanetComponent implements OnInit {
   private subscription: Observable<Planet>;
 
 
-  constructor(private route: ActivatedRoute, private singlePlanet: SinglePlanetService) {
+  constructor(private route: ActivatedRoute, private planets: PlanetsService, private location: Location) {
     this.error = false;
+  }
+
+  isNumber(x: string): boolean {
+    return !!parseFloat(x);
+  }
+
+  back(): void {
+    this.location.back();
   }
 
   ngOnInit() {
     const id = this.route.snapshot.params.id;
-    this.subscription = this.singlePlanet.get(id);
-    this.subscription
-      .catch((e) => {
-        this.error = true;
-        return Observable.throw("HTTP error")
-      })
-      .subscribe((planet) => {
-        this.planet = planet;
-        this.error = false
-      });
+    this.planets.init()
+    .then(() => this.planet = this.planets.findPlanetByID(id));
   }
 
 }
