@@ -13,6 +13,11 @@ import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { FilterPipe } from './filter.pipe';
 import { ToNumberPipe } from './to-number.pipe';
+import { MatToolbarModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +31,11 @@ import { ToNumberPipe } from './to-number.pipe';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatListModule,
+    MatPaginatorModule
   ],
   providers: [PlanetsService, CacheService, SearchService, DecimalPipe],
   bootstrap: [AppComponent]
