@@ -17,6 +17,7 @@ import { MatToolbarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { PaginatePipe } from './paginate.pipe';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     PlanetComponent,
     FilterPipe,
     ToNumberPipe,
+    PaginatePipe,
   ],
   imports: [
     BrowserModule,

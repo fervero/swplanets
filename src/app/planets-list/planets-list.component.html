@@ -1,9 +1,9 @@
 <label for="search-box">Search: </label>
 <input #searchBox id="search-box" type="text" (keyup)="updateSearch(searchBox.value)" [(ngModel)]="searchBoxTerm"/>
 <mat-nav-list>
-  <mat-list-item *ngFor="let planet of planets.planets$ | async | filter: searchTerm"><a [routerLink]="'/planet/'+extractPlanetId(planet.url)">{{planet.name}}</a></mat-list-item>
+  <mat-list-item *ngFor="let planet of planets.planets$ | async | filter: searchTerm | paginate: 2 : 5"><a [routerLink]="'/planet/'+extractPlanetId(planet.url)">{{planet.name}}</a></mat-list-item>
 </mat-nav-list>
-<mat-paginator></mat-paginator>
+<mat-paginator #paginator></mat-paginator>
 
 <!-- <a [class.disabled]="page<2" [routerLink]="'/planets'" [queryParams]="{start: page-1, search: searchTerm}">Previous</a>
 <a [class.disabled]="page*10>=totalCount" [routerLink]="'/planets'" [queryParams]="{start: page+1, search: searchTerm}">Next</a> -->
