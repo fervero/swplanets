@@ -32,7 +32,7 @@ export class PlanetComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.params.id;
     this.planets.init()
-    .then(() => this.planet = this.planets.findPlanetByID(id));
+      .then(() => this.planet = this.planets.findPlanetByID(id));
   }
 
 }

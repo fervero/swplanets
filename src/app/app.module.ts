@@ -17,7 +17,10 @@ import { MatToolbarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 import { PaginatePipe } from './paginate.pipe';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -37,7 +40,10 @@ import { PaginatePipe } from './paginate.pipe';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatListModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatInputModule,
+    MatTableModule,
+    MatButtonModule,
   ],
   providers: [PlanetsService, CacheService, SearchService, DecimalPipe],
   bootstrap: [AppComponent]

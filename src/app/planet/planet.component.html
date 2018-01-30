@@ -1,14 +1,14 @@
-<div *ngIf="planet && planet.name">
-    <h2>{{planet.name}}</h2>
-    <p><b>Rotation period: </b>{{planet.rotation_period | toNumber}}</p>
-    <p><b>Orbital period: </b>{{planet.orbital_period | toNumber}}</p>
-    <p><b>Diameter: </b>{{planet.diameter | toNumber}}</p>
-    <p><b>Climate: </b>{{planet.climate}}</p>
-    <p><b>Terrain: </b>{{planet.terrain}}</p>
-    <p><b>Surface water: </b>{{planet.surface_water}}{{(isNumber(planet.surface_water)) ? '%' : ''}}</p>
-    <p><b>Population: </b>{{planet.population | toNumber}}</p>
-</div>
-<button (click)="back()">BACK</button>
+<h2 *ngIf="planet && planet.name" class="mat-display-1">{{planet.name}}</h2>
+<mat-list *ngIf="planet && planet.name">
+    <mat-list-item><b>Rotation period: </b> {{planet.rotation_period | toNumber}}</mat-list-item>
+    <mat-list-item><b>Orbital period: </b> {{planet.orbital_period | toNumber}}</mat-list-item>
+    <mat-list-item><b>Diameter: </b> {{planet.diameter | toNumber}}</mat-list-item>
+    <mat-list-item><b>Climate: </b> {{planet.climate}}</mat-list-item>
+    <mat-list-item><b>Terrain: </b> {{planet.terrain}}</mat-list-item>
+    <mat-list-item><b>Surface water: </b> {{planet.surface_water}}{{(isNumber(planet.surface_water)) ? '%' : ''}}</mat-list-item>
+    <mat-list-item><b>Population: </b> {{planet.population | toNumber}}</mat-list-item>
+</mat-list>
+<button mat-raised-button color="primary" (click)="back()">BACK</button>
 <div *ngIf="error">
   <span class="error">Sorry, planet not found.</span>
 </div>

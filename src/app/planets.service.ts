@@ -6,8 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { CacheService } from './cache.service';
-import { UnaryFunction } from 'rxjs/interfaces';
-
+import { map } from 'rxjs/operators'
 const apiURL = "https://swapi.co/api";
 const fallbackURL = "/assets";
 
@@ -16,6 +15,9 @@ const fallbackURL = "/assets";
  * @param n 
  */
 const range = (n: number) => [...Array(n + 1).keys()].filter(x => x > 1);
+
+const nameFilter = (term: string) =>
+  ({ name }) => name.toLowerCase().includes(term.toLowerCase());
 
 @Injectable()
 export class PlanetsService {
@@ -65,10 +67,11 @@ export class PlanetsService {
     return this.getAllPlanets(this.getNthPageLocally.bind(this));
   }
 
-  search(planets: Planet[], term: string): Planet[] {
-    return planets.filter(
-      ({name}) => name.includes(term)
-    )
+  filterByName(term: string): Observable<Planet[]> {
+    return this.planets$
+      .pipe(map(
+        (planets) => planets.filter(nameFilter(term)))
+      )
   }
 
   extractPlanetID(url: string): string {
@@ -78,15 +81,17 @@ export class PlanetsService {
   findPlanetByID(id: string): Planet {
     const planets = this.planets$.getValue();
     return planets
-      .find((planet) => { 
+      .find((planet) => {
         const str = planet.url.match(/planets\/([0-9]+)\/?/)[1];
-        return str === id});
+        return str === id
+      });
   }
 
   init(): Promise<any> {
-    if(this.planets$.getValue().length > 0) {
+
+    if (this.planets$.getValue().length > 0) {
       return Promise.resolve(true);
-    } 
+    }
     else return this.getAllPlanetsFromAPI()
       .then(
       (results) => this.planets$.next(results))
@@ -94,15 +99,15 @@ export class PlanetsService {
         console.error(err);
         this.error$.next("Cannot reach the Star Wars API, retrieving the local version.");
         this.getAllPlanetsLocally().then(
-          (results) => { 
+          (results) => {
             this.error$.next("Using locally backed up data, might not be up to date.");
-            this.planets$.next(results); 
+            this.planets$.next(results);
           }
         )
-        .catch((err2) => {
-          console.error(err2);
-          this.error$.next("Couldn't retrieve data")
-        })
+          .catch((err2) => {
+            console.error(err2);
+            this.error$.next("Couldn't retrieve data")
+          })
       })
   }
 }

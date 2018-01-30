@@ -10,6 +10,9 @@ import { Location } from '@angular/common';
 import { filter, tap, withLatestFrom, map } from 'rxjs/operators';
 import { switchMap } from 'rxjs/operators/switchMap';
 
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 10;
+
 @Component({
   selector: 'app-planets-list',
   templateUrl: './planets-list.component.html',
@@ -17,11 +20,13 @@ import { switchMap } from 'rxjs/operators/switchMap';
 })
 export class PlanetsListComponent implements OnInit {
 
-  results: Array<Planet>;
+  filteredList: Observable<Planet[]>;
   next: string = "";
   previous: string = "";
   public searchBoxTerm: string = "";
   public searchTerm: string = "";
+  public pageSize: number;
+  public pageIndex: number;
 
   constructor(
     public planets: PlanetsService,
@@ -40,23 +45,40 @@ export class PlanetsListComponent implements OnInit {
     return !!parseFloat(x);
   }
 
-  ngOnInit() {
-    this.planets.init();
-    this.route.queryParams.subscribe((params) => {
-      if (params.search) {
-        this.searchBoxTerm = params.search;
-      } else {
-        this.searchBoxTerm = "";
-      }
-      this.searchTerm = this.searchBoxTerm;
+  onPaginateChange({ length, pageSize, pageIndex }): void {
+    const pagerParams = {
+      page: pageIndex + 1,
+      pagesize: pageSize
+    };
+    const searchParams = this.searchTerm ? {search: this.searchTerm} : {};
+    this.router.navigate(["/planets"], { queryParams: Object.assign({}, pagerParams, searchParams)    });
+  }
+
+  initSubscriptions(): void {
+    this.route.queryParams.subscribe(({ search, page, pagesize }) => {
+
+      // Separate properties: searchBoxTerm and searchTerm - the first one is directly tied to the search box
+      // and updates in real time, the latter is debounced by a few hundred ms, so the router doesn't navigate
+      // somewhere away every time the user types one letter.
+      this.searchTerm = this.searchBoxTerm = search || "";
+      this.pageSize = pagesize || DEFAULT_PAGE_SIZE;
+      this.pageIndex = (page || DEFAULT_PAGE) - 1;
+      this.filteredList = this.planets.filterByName(this.searchTerm);
     });
     this.searchService.search$
       .subscribe((term) => {
         if (term.length > 0) {
-          this.router.navigate(['/planets'], { queryParams: { search: term } })
+          this.router.navigate(["/planets"], { queryParams: { search: term, page: DEFAULT_PAGE, pagesize: this.pageSize } });
         } else {
-          this.router.navigate(['/planets'])
+          this.router.navigate(["/planets"]);
         }
-      })
+      });
+
   }
+
+  ngOnInit() {
+    this.planets.init()
+      .then(() => this.initSubscriptions());
+  }
+
 };
