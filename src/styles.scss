@@ -1,3 +1,79 @@
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+// @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 /* You can add global styles to this file, and also import other style files */
+
+// @import '@angular/material/theming';
+@import '~@angular/material/_theming.scss';
+
+@include mat-core();
+
+$sw-primary: (
+    50 : #e3e5ec,
+    100 : #babdd1,
+    200 : #8c92b2,
+    300 : #5e6693,
+    400 : #3c457b,
+    500 : #192464,
+    600 : #16205c,
+    700 : #121b52,
+    800 : #0e1648,
+    900 : #080d36,
+    A100 : #6f7bff,
+    A200 : #3c4cff,
+    A400 : #091dff,
+    A700 : #0013ef,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$sw-accent: (
+    50 : #ece3e4,
+    100 : #d1babd,
+    200 : #b28c91,
+    300 : #935d64,
+    400 : #7b3b43,
+    500 : #641822,
+    600 : #5c151e,
+    700 : #521119,
+    800 : #480e14,
+    900 : #36080c,
+    A100 : #ff6f77,
+    A200 : #ff3c47,
+    A400 : #ff0917,
+    A700 : #ef000d,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+
+$sw-theme: mat-light-theme(mat-palette($sw-primary), mat-palette($sw-accent));
+
+@include angular-material-theme($sw-theme);
