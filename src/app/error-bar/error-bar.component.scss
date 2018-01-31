@@ -1,0 +1,10 @@
+@import '~@angular/material/_theming.scss';
+
+@mixin error-bar-theme($theme) {
+	$warn: map-get($theme, warn);	
+	.io_error {
+		font-size: 1rem;
+		background-color: mat-color($warn, 400);
+		color: mat-contrast($warn, 400);
+	}
+}

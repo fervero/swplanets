@@ -5,8 +5,8 @@ import { Planet } from './planet';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { CacheService } from './cache.service';
 import { map } from 'rxjs/operators'
+
 const apiURL = "https://swapi.co/api";
 const fallbackURL = "/assets";
 
@@ -24,7 +24,7 @@ export class PlanetsService {
   planets$: BehaviorSubject<Planet[]>;
   error$: Subject<string>;
 
-  constructor(private http: HttpClient, private cache: CacheService) {
+  constructor(private http: HttpClient) {
     this.planets$ = new BehaviorSubject([]);
     this.error$ = new Subject();
   }
@@ -100,13 +100,13 @@ export class PlanetsService {
         this.error$.next("Cannot reach the Star Wars API, retrieving the local version.");
         this.getAllPlanetsLocally().then(
           (results) => {
-            this.error$.next("Using locally backed up data, might not be up to date.");
+            this.error$.next("Using locally backed up data, might be outdated.");
             this.planets$.next(results);
           }
         )
           .catch((err2) => {
             console.error(err2);
-            this.error$.next("Couldn't retrieve data")
+            this.error$.next("Couldn't retrieve data.")
           })
       })
   }
