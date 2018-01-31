@@ -4,9 +4,11 @@ h2 {
 	padding-left: 0.4em;
 }
 
-button {
-	margin: 1em auto;
+.btn_back {
+	margin: 2em auto 1em;
 	display: block;
+	text-transform: uppercase;
+	width: 10em;
 }
 
 b {

@@ -20,7 +20,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { PaginatePipe } from './paginate.pipe';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HistoryService } from './history.service';
 
 
 @NgModule({
@@ -44,8 +46,9 @@ import {MatButtonModule} from '@angular/material/button';
     MatInputModule,
     MatTableModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
-  providers: [PlanetsService, CacheService, SearchService, DecimalPipe],
+  providers: [PlanetsService, CacheService, SearchService, DecimalPipe, HistoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

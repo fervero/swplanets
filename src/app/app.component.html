@@ -1,4 +1,8 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>{{title}}</mat-toolbar-row>
+  <mat-toolbar-row>
+    <div class="mat-h1">
+        <a class="app-header" [routerLink]="['/planets']">{{title}}</a>
+    </div> 
+  </mat-toolbar-row>
 </mat-toolbar>
 <router-outlet></router-outlet>

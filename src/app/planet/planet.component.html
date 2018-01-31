@@ -8,7 +8,13 @@
     <mat-list-item><b>Surface water: </b> {{planet.surface_water}}{{(isNumber(planet.surface_water)) ? '%' : ''}}</mat-list-item>
     <mat-list-item><b>Population: </b> {{planet.population | toNumber}}</mat-list-item>
 </mat-list>
-<button mat-raised-button color="primary" (click)="back()">BACK</button>
+<a *ngIf="history.lastUrl | async"
+  mat-raised-button
+  class="btn_back"
+  color="primary" 
+  [routerLink]="history.lastUrl | async" 
+  [queryParams]="history.lastParams | async"
+  >Back</a>
 <div *ngIf="error">
   <span class="error">Sorry, planet not found.</span>
 </div>

@@ -4,7 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Planet } from '../planet';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { HistoryService } from '../history.service';
 import 'rxjs/add/operator/catch';
+import { ActivatedRouteSnapshot } from '@angular/router/src/router_state';
 
 @Component({
   selector: 'app-planet',
@@ -14,10 +17,11 @@ import 'rxjs/add/operator/catch';
 export class PlanetComponent implements OnInit {
   public planet: Planet;
   public error: boolean;
-  private subscription: Observable<Planet>;
 
-
-  constructor(private route: ActivatedRoute, private planets: PlanetsService, private location: Location) {
+  constructor(private route: ActivatedRoute,
+    private planets: PlanetsService,
+    public history: HistoryService,
+  ) {
     this.error = false;
   }
 
@@ -25,14 +29,9 @@ export class PlanetComponent implements OnInit {
     return !!parseFloat(x);
   }
 
-  back(): void {
-    this.location.back();
-  }
-
   ngOnInit() {
     const id = this.route.snapshot.params.id;
     this.planets.init()
       .then(() => this.planet = this.planets.findPlanetByID(id));
   }
-
 }

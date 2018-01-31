@@ -1,17 +1,26 @@
-<mat-input-container>
-  <label for="search-box">Search: </label>
-  <input matInput #searchBox id="search-box" type="text" (keyup)="updateSearch(searchBox.value)" [(ngModel)]="searchBoxTerm" />
-</mat-input-container>
-<mat-nav-list *ngIf="filteredList | async">
-  <mat-list-item *ngFor="let planet of filteredList | async | paginate :pageIndex+1 :pageSize">
-    <a [routerLink]="'/planet/'+extractPlanetId(planet.url)">{{planet.name}}</a>
-  </mat-list-item>
-</mat-nav-list>
-<mat-paginator *ngIf="(filteredList | async) && (filteredList | async).length" 
-  #paginator class="planets-pager"
-  [length]="(filteredList | async).length" 
-  [pageSize]="pageSize"
-  [pageIndex]="pageIndex"
-  [pageSizeOptions]="[5, 10, 25, 100]"
-  (page)="pageEvent = $event; onPaginateChange($event)" >
-</mat-paginator>
+<div *ngIf="loading; else content">
+  <mat-progress-spinner class="spinner"
+    [color]="'accent'"
+    [mode]="'indeterminate'"
+  >
+  </mat-progress-spinner>
+</div>
+<ng-template #content>
+    <mat-input-container class="search_container">
+        <label for="search-box">Search: </label>
+        <input matInput #searchBox id="search-box" type="text" (keyup)="updateSearch(searchBox.value)" [(ngModel)]="searchBoxTerm" />
+      </mat-input-container>
+      <mat-nav-list *ngIf="filteredList | async">
+        <mat-list-item *ngFor="let planet of filteredList | async | paginate :pageIndex+1 :pageSize">
+          <a [routerLink]="'/planet/'+extractPlanetId(planet.url)">{{planet.name}}</a>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-paginator *ngIf="(filteredList | async) && (filteredList | async).length" 
+        #paginator class="planets_pager"
+        [length]="(filteredList | async).length" 
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        (page)="pageEvent = $event; onPaginateChange($event)" >
+      </mat-paginator>
+</ng-template>

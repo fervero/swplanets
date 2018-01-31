@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { filter, tap, withLatestFrom, map } from 'rxjs/operators';
 import { switchMap } from 'rxjs/operators/switchMap';
+import { HistoryService } from '../history.service';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 10;
@@ -21,18 +22,18 @@ const DEFAULT_PAGE_SIZE = 10;
 export class PlanetsListComponent implements OnInit {
 
   filteredList: Observable<Planet[]>;
-  next: string = "";
-  previous: string = "";
   public searchBoxTerm: string = "";
   public searchTerm: string = "";
   public pageSize: number;
   public pageIndex: number;
+  public loading: boolean = true;
 
   constructor(
     public planets: PlanetsService,
     private route: ActivatedRoute,
     private router: Router,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private history: HistoryService
   ) { }
 
   updateSearch(term: string): void {
@@ -56,7 +57,7 @@ export class PlanetsListComponent implements OnInit {
 
   initSubscriptions(): void {
     this.route.queryParams.subscribe(({ search, page, pagesize }) => {
-
+      this.history.save(this.route.snapshot);
       // Separate properties: searchBoxTerm and searchTerm - the first one is directly tied to the search box
       // and updates in real time, the latter is debounced by a few hundred ms, so the router doesn't navigate
       // somewhere away every time the user types one letter.
@@ -78,6 +79,7 @@ export class PlanetsListComponent implements OnInit {
 
   ngOnInit() {
     this.planets.init()
+      .then(() => this.loading = false)
       .then(() => this.initSubscriptions());
   }
 
