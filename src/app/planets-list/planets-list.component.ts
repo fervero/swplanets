@@ -55,7 +55,7 @@ export class PlanetsListComponent implements OnInit {
     this.router.navigate(["/planets"], { queryParams: Object.assign({}, pagerParams, searchParams)    });
   }
 
-  initSubscriptions = () => {
+  initSubscriptions(): void {
     this.route.queryParams.subscribe(({ search, page, pagesize }) => {
       this.history.save(this.route.snapshot);
       // Separate properties: searchBoxTerm and searchTerm - the first one is directly tied to the search box
@@ -80,7 +80,7 @@ export class PlanetsListComponent implements OnInit {
   ngOnInit() {
     this.planets.init()
       .then(() => this.loading = false)
-      .then(this.initSubscriptions);
+      .then(() => this.initSubscriptions());
   }
 
 };

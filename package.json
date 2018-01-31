@@ -8,7 +8,9 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build-gh": "ng build --prod --output-path docs --base-href https://fervero.github.io/swplanets/",
+    "build-gh-no-aot": "ng build --prod --no-aot --output-path docs --base-href https://fervero.github.io/swplanets/"
   },
   "private": true,
   "dependencies": {
